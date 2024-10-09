@@ -11,6 +11,10 @@ func main() {
 	// Scanner is used for input handling
 	scanner := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
+	cfg := configuration{
+		previous: "",
+		next:     "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20",
+	}
 	for {
 		printReplLine()
 		scanner.Scan()
@@ -24,7 +28,7 @@ func main() {
 		userCommand := strings.ToLower(strings.TrimSpace(scanner.Text()))
 		command, ok := commands[userCommand]
 		if ok {
-			err = command.callback()
+			err = command.callback(&cfg)
 			if err != nil {
 				fmt.Printf("Error executing command: %v\n", err)
 			}
